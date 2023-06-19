@@ -1,0 +1,69 @@
+<div th:fragment="header-navigable">
+    <div class="container">
+        <div class="navbar-dark bg-dark navbar-expand-lg d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none navbar-brand">
+                <span class="fs-4 text-warning">SP</span>
+            </a>
+            <div class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a href="/" class="nav-link px-2">Home</a></li>
+                    <li sec:authorize="hasAuthority('USER')" class="nav-item"><a href="/products" class="nav-link px-2">Products</a></li>
+                    <li sec:authorize="hasAuthority('USER')" class="nav-item"><a href="/orders" class="nav-link px-2">Orders</a></li>
+                    <li sec:authorize="hasAnyAuthority('ADMIN','MANAGER')" class="nav-item"><a href="/products" class="nav-link px-2">Edit Products</a></li>
+                    <li sec:authorize="hasAnyAuthority('ADMIN','MANAGER')" class="nav-item"><a href="/orders/" class="nav-link px-2">User Orders</a></li>
+                    <li class="nav-item"><a href="/about" class="nav-link px-2">About Us</a></li>
+                </ul>
+            </div>
+
+            <form sec:authorize="isAuthenticated()" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="/products" method="get">
+                <input type="search" name="name" th:attr="value=${name}" class="form-control form-control-dark" placeholder="Search by product..." aria-label="Search">
+            </form>
+
+            <div sec:authorize="isAnonymous()" class="text-end">
+                <a href="/login" class="btn btn-outline-light me-2">Login</a>
+                <a href="/registration" class="btn btn-warning">Sign up</a>
+            </div>
+
+            <a sec:authorize="isAuthenticated()" class="text-end btn-group">
+
+                <a sec:authorize="hasAuthority('USER')" href="/cart" class="btn btn-success">Cart
+                    <span class="badge bg-danger" th:if="${allPrice}>0" th:text="${allPrice}>=2000? '$'+${allPrice} : '$'+(${allPrice}+50)">4</span>
+                </a>
+
+                <a class="dropdown btn">
+
+                    <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="/img/admin.png" th:src="@{/img/{name}(name=${user.photoName})}" alt="" width="37" height="37" class="rounded me-2">
+                        <strong th:text="${user.firstName}+' '+${user.lastName}">My Account</strong>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-dark text-small" aria-labelledby="">
+                        <li><a class="dropdown-item" href="/profile">My Profile</a></li>
+
+                        <li sec:authorize="hasAuthority('MANAGER')"><a class="dropdown-item disabled" href="/users">List Users</a></li>
+
+                        <li sec:authorize="hasAuthority('ADMIN')"><a class="dropdown-item" href="/users">List Users</a></li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <form th:action="@{/logout}" th:method="post">
+                            <input type="submit" class="dropdown-item" value="Sign out">
+                        </form>
+                    </ul>
+
+                </a>
+            </a>
+
+        </div>
+    </div>
+</div>
+
+<div th:fragment="header-registration-login">
+    <div class="container text-center">
+        <div>
+            <a href="/" class="col-md-auto d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none navbar-brand">
+                <span class="fs-4 text-warning">Shop Product</span>
+            </a>
+        </div>
+    </div>
+</div>

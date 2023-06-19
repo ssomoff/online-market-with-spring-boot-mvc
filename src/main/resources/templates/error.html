@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Error - Not Found Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Error - Not Found Page</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-white">
+        <div class="container mt-5">
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <div th:if="${message}=='Forbidden'"
+                     th:text="'This user is not authorized to access this page or page is not exist'"
+                     class="alert alert-danger text-center">
+                </div>
+                <div th:if="${message}!='Forbidden'"
+                     th:text="${message}"
+                     class="alert alert-danger text-center">
+                </div>
+                <a href="/" class="btn btn-primary btn-lg">Back home</a>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>

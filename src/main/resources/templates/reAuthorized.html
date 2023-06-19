@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>My Profile Re-authorization - Shop products</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light"> Re-authorization message</h1>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-white">
+        <div class="container mt-5">
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <div th:if="${message}" th:text="${message}" class="alert alert-success text-center"></div>
+                <div th:if="${messageErr}" th:text="${messageErr}" class="alert alert-danger text-center"></div>
+                <div th:if="${messageArr}" th:text="${messageArr}" class="alert alert-warning text-center"></div>
+
+                <form th:action="@{/logout}" th:method="post">
+                    <input type="submit" class="btn btn-secondary btn-lg d-grid gap-2col-lg-6 col-md-12 mx-auto"
+                           value="Re-authorization">
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+</body>
+</html>

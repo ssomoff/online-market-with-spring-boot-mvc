@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>List Users - Shop products</title>
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+</head>
+<body>
+<header class="p-3 bg-dark text-white">
+    <div th:insert="~{blocks/header :: header-navigable}"/>
+</header>
+<main>
+
+    <section class="py-1 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">List Users</h1><br>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <table class="table table-hover table-bordered border-secondary">
+            <thead>
+            <tr class="table-dark">
+                <th scope="col">#</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Address</th>
+                <th scope="col">Active</th>
+                <th scope="col">Role</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:each="el : ${users}">
+                <tr>
+                    <th th:text="${el.id}" scope="row"></th>
+                    <td th:text="${el.firstName}"></td>
+                    <td th:text="${el.lastName}"></td>
+                    <td th:text="${el.phone}"></td>
+                    <td th:text="${el.email}"></td>
+                    <td th:text="${el.address}"></td>
+                    <td th:text="${el.active}"></td>
+                    <td th:text="${el.roles.iterator().next()}"></td>
+
+                    <td>
+                        <p th:if="${el.id==1}">Account cannot be changed</p>
+                        <form th:if="${el.id!=1}" th:action="@{/users/{id}/role/(id=${el.id})}" method="post">
+                            <div class="input-group">
+                                <select name="role" class="form-select form-select-sm mb-2"
+                                        aria-label="Default select example">
+                                    <option selected th:attr="value=${el.roles.iterator().next()}"
+                                            th:text="${el.roles.iterator().next()}">Select Role
+                                    </option>
+                                    <option th:if="${el.roles.iterator().next()}!=${role}"
+                                            th:each="role : ${T(com.somoff.shopproject.entities.Role).values()}"
+                                            th:value="${role}"
+                                            th:text="${role}">Select
+                                    </option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-info btn-sm">Change Roles</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form th:if="${el.active && el.id!=1}" th:action="@{/users/{id}/deactivate/(id=${el.id})}"
+                              method="post">
+                            <button type="submit" class="btn btn-danger btn-sm" style="width: 100%">Deactivate</button>
+                        </form>
+
+                        <form th:if="${!el.active && el.id!=1}" th:action="@{/users/{id}/activate/(id=${el.id})}"
+                              method="post">
+                            <button type="submit" class="btn btn-success btn-sm" style="width: 100%">Activate</button>
+                        </form>
+                    </td>
+                </tr>
+            </div>
+            </tbody>
+        </table>
+
+    </div>
+
+</main>
+
+<div th:insert="~{blocks/footer :: footer}"/>
+<div th:insert="~{blocks/image_svg :: image_logo}"/>
+
+<!-- Optional JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
